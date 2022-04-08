@@ -22,7 +22,7 @@ def pregunta_01():
     40
 
     """
-    return
+    return len(tbl0)
 
 
 def pregunta_02():
@@ -33,7 +33,7 @@ def pregunta_02():
     4
 
     """
-    return
+    return len(tbl0.columns)
 
 
 def pregunta_03():
@@ -49,8 +49,9 @@ def pregunta_03():
     E    14
     Name: _c1, dtype: int64
 
-    """
-    return
+    """ 
+
+    return tbl0.groupby('_c1').count()['_c0']
 
 
 def pregunta_04():
@@ -65,7 +66,7 @@ def pregunta_04():
     E    4.785714
     Name: _c2, dtype: float64
     """
-    return
+    return tbl0.groupby('_c1').mean()['_c2']
 
 
 def pregunta_05():
@@ -82,7 +83,7 @@ def pregunta_05():
     E    9
     Name: _c2, dtype: int64
     """
-    return
+    return tbl0.groupby('_c1').max()['_c2']
 
 
 def pregunta_06():
@@ -94,7 +95,7 @@ def pregunta_06():
     ['A', 'B', 'C', 'D', 'E', 'F', 'G']
 
     """
-    return
+    return sorted(tbl1['_c4'].str.upper().unique())
 
 
 def pregunta_07():
@@ -110,7 +111,7 @@ def pregunta_07():
     E    67
     Name: _c2, dtype: int64
     """
-    return
+    return tbl0.groupby('_c1').sum()['_c2']
 
 
 def pregunta_08():
@@ -128,7 +129,8 @@ def pregunta_08():
     39   39   E    5  1998-01-26    44
 
     """
-    return
+    tbl0['suma']=tbl0['_c0']+tbl0['_c2']
+    return tbl0
 
 
 def pregunta_09():
@@ -141,12 +143,12 @@ def pregunta_09():
     1     1   A    2  1999-10-28  1999
     2     2   B    5  1998-05-02  1998
     ...
-    37   37   C    9  1997-07-22  1997
-    38   38   E    1  1999-09-28  1999
+    37   37   C    9  1997-07-09-28  1999
     39   39   E    5  1998-01-26  1998
 
     """
-    return
+    tbl0['year']=[date[0] for date in tbl0['_c3'].str.split('-')]
+    return tbl0
 
 
 def pregunta_10():
@@ -155,7 +157,8 @@ def pregunta_10():
     la columna _c2 para el archivo `tbl0.tsv`.
 
     Rta/
-                                   _c1
+                            -22  1997
+    38   38   E    1  1999       _c1
       _c0
     0   A              1:1:2:3:6:7:8:9
     1   B                1:3:4:5:6:8:9
@@ -163,7 +166,9 @@ def pregunta_10():
     3   D                  1:2:3:5:5:7
     4   E  1:1:2:3:3:4:5:5:5:6:7:8:8:9
     """
-    return
+    tbl0_use=tbl0.sort_values(by=['_c2'])
+    tbl0_use['_c2']=tbl0_use['_c2'].astype(str)
+    return pd.DataFrame(tbl0_use.groupby('_c1')['_c2'].apply(':'.join))
 
 
 def pregunta_11():
@@ -182,7 +187,10 @@ def pregunta_11():
     38   38      d,e
     39   39    a,d,f
     """
-    return
+    tbl1_copy=tbl1.copy()
+    tbl1_copy=tbl1_copy.sort_values(by=['_c4'])
+    answer=tbl1_copy.groupby('_c0')['_c4'].apply(','.join)
+    return pd.DataFrame(answer)
 
 
 def pregunta_12():
