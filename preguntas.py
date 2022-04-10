@@ -190,7 +190,10 @@ def pregunta_11():
     tbl1_copy=tbl1.copy()
     tbl1_copy=tbl1_copy.sort_values(by=['_c4'])
     answer=tbl1_copy.groupby('_c0')['_c4'].apply(','.join)
-    return pd.DataFrame(answer)
+    dataFrame=pd.DataFrame()
+    dataFrame['_c0']=answer.index
+    dataFrame['_c4']=answer
+    return dataFrame
 
 
 def pregunta_12():
@@ -208,7 +211,13 @@ def pregunta_12():
     38   38                    eee:0,fff:9,iii:2
     39   39                    ggg:3,hhh:8,jjj:5
     """
-    return
+    tbl2_sorted=tbl2.sort_values(by='_c5a')
+    tbl2_sorted['_c5']=tbl2_sorted['_c5a']+':'+tbl2_sorted['_c5b'].astype(str)
+    answer=tbl2_sorted.groupby('_c0')['_c5'].apply(','.join)
+    dataFrame=pd.DataFrame()
+    dataFrame['_c0']=answer.index
+    dataFrame['_c5']=answer
+    return dataFrame
 
 
 def pregunta_13():
@@ -225,4 +234,8 @@ def pregunta_13():
     E    275
     Name: _c5b, dtype: int64
     """
-    return
+    tbl3=pd.DataFrame()
+    tbl3['_c0']=tbl0['_c0']
+    tbl3['_c5b']=tbl2.groupby('_c0').sum()['_c5b']
+    tbl3['_c1']=tbl0['_c1']
+    return tbl3.groupby('_c1')['_c5b'].sum()
